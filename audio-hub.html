@@ -47,6 +47,10 @@ nav{display:flex;align-items:center;justify-content:space-between;height:72px}
 .coming i:nth-child(2){animation-delay:.3s}
 .coming i:nth-child(3){animation-delay:.6s}
 
+/* [RESIM] audio hub görseli (big brain) — değiştirmek istersen audio.png'yi üzerine kaydet */
+.art{width:min(90%,420px);margin:52px auto 0;border-radius:var(--radius);border:1px solid var(--line);overflow:hidden;background:#0b0b0e;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 34px rgba(200,200,225,.08)}
+.art img{display:block;width:100%;height:auto}
+
 .eq{display:flex;gap:10px;justify-content:center;align-items:flex-end;height:110px;margin-top:56px;width:min(90%,560px)}
 .eq i{width:9px;border-radius:99px;background:linear-gradient(180deg,#ffffff,#7c7c88);box-shadow:0 0 16px rgba(255,255,255,.35);transform-origin:bottom;animation:eq 1.15s ease-in-out infinite}
 .eq i:nth-child(1){height:45%;animation-delay:0s}
@@ -88,12 +92,12 @@ footer{border-top:1px solid var(--line);padding:34px 0}
 <header id="topbar">
   <div class="wrap">
     <nav>
-      <a class="logo" href="index.html">Z<span>ANITY</span></a>
+      <a class="logo" href="/">Z<span>ANITY</span></a>
       <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="criminal-vs-swat.html">Criminal vs SWAT</a></li>
-        <li><a href="trench-war.html">Trench War</a></li>
-        <li><a href="audio-hub.html" class="on">Audio Hub</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="criminal-vs-swat">Criminal vs SWAT</a></li>
+        <li><a href="trench-war">Trench War</a></li>
+        <li><a href="audio-hub" class="on">Audio Hub</a></li>
       </ul>
       <button class="burger" id="burger" aria-label="Menu">☰</button>
     </nav>
@@ -104,8 +108,11 @@ footer{border-top:1px solid var(--line);padding:34px 0}
   <span class="badge">Script</span>
   <h1>AUDIO HUB</h1>
   <p class="coming">coming soon<i>.</i><i>.</i><i>.</i></p>
+  <div class="art">
+    <img src="audio.png" alt="Audio Hub — big brain">
+  </div>
   <div class="eq"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <div class="back"><a class="btn btn-ghost" href="index.html">← Back to Home</a></div>
+  <div class="back"><a class="btn btn-ghost" href="/">← Back to Home</a></div>
 </section>
 
 <footer>
@@ -126,5 +133,5 @@ navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => na
 const glow = document.getElementById('cursorGlow');
 addEventListener('pointermove', e => { glow.style.opacity = 1; glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a302b01fbc6de32b',t:'MTc4NzU3Nzk3OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
