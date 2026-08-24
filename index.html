@@ -54,6 +54,7 @@ nav{display:flex;align-items:center;justify-content:space-between;height:72px}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 34px rgba(230,230,245,.55)}
 .btn-ghost{color:var(--silver);border:1px solid var(--line);background:rgba(255,255,255,.03)}
 .btn-ghost:hover{border-color:rgba(255,255,255,.35);color:#fff;text-shadow:0 0 12px rgba(255,255,255,.5)}
+button.btn{cursor:pointer;border:none;font-family:inherit}
 
 section{padding:110px 0}
 .sec-head{margin-bottom:54px}
@@ -189,8 +190,8 @@ footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
 <section class="hero" id="home">
   <h1>ZANITY</h1>
   <div class="cta-row">
-    <a class="btn btn-primary" href="#scripts">Browse Scripts</a>
-    <a class="btn btn-ghost" href="#faq">FAQ</a>
+    <button class="btn btn-primary" onclick="goTo('scripts')">Browse Scripts</button>
+    <button class="btn btn-ghost" onclick="goTo('faq')">FAQ</button>
   </div>
 </section>
 
@@ -306,6 +307,9 @@ addEventListener('pointermove', e => { glow.style.opacity = 1; glow.style.left =
 const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('on'); io.unobserve(en.target); } }), {threshold:.18});
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+// ---- SALT KAYDIRMA (URL'a # eklemesin) ----
+function goTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+
 // ---- TEMA (default: dark) ----
 const themeBtn = document.getElementById('themeBtn');
 function setTheme(light){
@@ -316,5 +320,5 @@ function setTheme(light){
 themeBtn.addEventListener('click', () => setTheme(!document.body.classList.contains('light')));
 try{ if(localStorage.getItem('zanity-theme') === 'light') setTheme(true); }catch(e){}
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a30460faeaba68b5',t:'MTc4NzU5NTcwOA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
