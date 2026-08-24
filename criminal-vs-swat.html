@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZANITY — Criminal vs SWAT</title>
+<meta name="description" content="Zanity script for Criminal vs SWAT — kill options, godmode, modified gun, teleports and more.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='72' font-size='70' text-anchor='middle' fill='%23c9c9d4' font-family='Arial' font-weight='bold'%3EZ%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#08080a; --bg2:#0e0e11; --panel:#121216;
+  --line:rgba(255,255,255,.08);
+  --txt:#ececee; --grey:#9b9ba4; --grey2:#6f6f78; --silver:#d4d4dd;
+  --radius:16px; --max:1120px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.6;overflow-x:hidden}
+::selection{background:rgba(255,255,255,.85);color:#0a0a0c}
+.bg-fx{position:fixed;inset:0;z-index:-2;pointer-events:none}
+.bg-fx::before{content:"";position:absolute;top:-260px;left:50%;transform:translateX(-50%);width:900px;height:520px;border-radius:50%;background:radial-gradient(closest-side,rgba(190,190,215,.14),transparent 70%)}
+.bg-fx::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 40%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 40%,transparent 100%)}
+#cursorGlow{position:fixed;width:520px;height:520px;border-radius:50%;background:radial-gradient(closest-side,rgba(200,200,225,.07),transparent 70%);transform:translate(-50%,-50%);z-index:-1;pointer-events:none;transition:opacity .4s;opacity:0}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+header{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .3s,border-color .3s,backdrop-filter .3s;border-bottom:1px solid transparent}
+header.scrolled{background:rgba(8,8,10,.75);backdrop-filter:blur(14px);border-color:var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:.28em;text-decoration:none;color:var(--silver);text-shadow:0 0 14px rgba(220,220,235,.45)}
+.logo span{color:#fff}
+.nav-links{display:flex;gap:6px;list-style:none;align-items:center}
+.nav-links a{color:var(--grey);text-decoration:none;font-size:.82rem;letter-spacing:.06em;padding:8px 13px;border-radius:10px;transition:.25s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.06);text-shadow:0 0 12px rgba(255,255,255,.5)}
+.nav-links a.on{color:#fff;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px var(--line)}
+.burger{display:none;background:none;border:1px solid var(--line);color:var(--silver);font-size:1.2rem;border-radius:10px;width:42px;height:42px;cursor:pointer}
+
+.hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:140px 24px 70px}
+.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 16px;font-size:.78rem;letter-spacing:.22em;color:var(--grey);background:rgba(255,255,255,.03);text-transform:uppercase}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff,0 0 22px rgba(255,255,255,.6);animation:blink 2.2s infinite}
+@keyframes blink{50%{opacity:.35}}
+.hero h1{margin:32px 0 8px;font-size:clamp(2.1rem,7.5vw,4.8rem);font-weight:900;letter-spacing:.14em;color:#f4f4f7;animation:breathe 4.5s ease-in-out infinite}
+@keyframes breathe{
+  0%,100%{text-shadow:0 0 12px rgba(255,255,255,.55),0 0 42px rgba(200,200,225,.30),0 0 100px rgba(170,170,200,.20)}
+  50%{text-shadow:0 0 16px rgba(255,255,255,.75),0 0 60px rgba(200,200,225,.50),0 0 140px rgba(170,170,200,.35)}
+}
+.hero .sub{font-size:clamp(.95rem,2.2vw,1.15rem);color:var(--grey);max-width:600px}
+.hero .sub b{color:var(--silver);font-weight:600}
+.pill-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:26px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 16px;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);background:rgba(255,255,255,.03)}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff,0 0 20px rgba(255,255,255,.6)}
+.pill.dim{color:var(--grey2)}
+.pill.dim .dot{background:#7c7c88;box-shadow:0 0 8px rgba(160,160,180,.5)}
+.cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;justify-content:center}
+.btn{text-decoration:none;font-size:.9rem;letter-spacing:.05em;padding:13px 30px;border-radius:12px;transition:.3s;font-weight:600}
+.btn-primary{color:#0a0a0c;background:linear-gradient(180deg,#ffffff,#cfcfda);box-shadow:0 0 22px rgba(230,230,245,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 34px rgba(230,230,245,.55)}
+.btn-ghost{color:var(--silver);border:1px solid var(--line);background:rgba(255,255,255,.03)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.35);color:#fff;text-shadow:0 0 12px rgba(255,255,255,.5)}
+
+/* [RESIM] görsel yerine şimdilik SVG — kendi görselin için: bu <div class="art">...</div> içini
+   <img src="cvs-banner.png" alt="Criminal vs SWAT" style="width:100%;display:block"> ile değiştir */
+.art{width:100%;max-width:820px;margin:52px auto 0;border-radius:var(--radius);border:1px solid var(--line);overflow:hidden;background:#0b0b0e;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.art svg{display:block;width:100%;height:auto}
+
+section{padding:100px 0}
+.sec-head{margin-bottom:44px}
+.sec-head .kicker{font-size:.76rem;letter-spacing:.3em;color:var(--grey2);text-transform:uppercase;display:block;margin-bottom:10px}
+.sec-head h2{font-size:clamp(1.8rem,4.5vw,2.5rem);font-weight:800;letter-spacing:.04em;color:#f0f0f4;text-shadow:0 0 24px rgba(220,220,240,.25)}
+.sec-head p{color:var(--grey);max-width:620px;margin-top:12px}
+
+/* ---- FEATURES (fotoğraftaki gibi kollapsible kategoriler) ---- */
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:20px;align-items:start}
+details.cat{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));overflow:hidden;transition:.3s}
+details.cat:hover{border-color:rgba(255,255,255,.2)}
+details.cat summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:17px 20px;user-select:none;transition:.25s}
+details.cat summary::-webkit-details-marker{display:none}
+details.cat summary:hover{background:rgba(255,255,255,.04)}
+.ci{width:38px;height:38px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid var(--line);box-shadow:inset 0 0 12px rgba(255,255,255,.06)}
+.cat summary h3{font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:#fff;flex:1;text-shadow:0 0 14px rgba(255,255,255,.35)}
+.chev{color:var(--grey2);transition:transform .3s;flex-shrink:0}
+details[open] .chev{transform:rotate(180deg)}
+details[open] summary{border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
+.cat ul{list-style:none;padding:8px 0}
+.cat li{display:flex;gap:9px;align-items:baseline;padding:8px 20px;font-size:.87rem;line-height:1.55}
+.cat li code{font-family:ui-monospace,SFMono-Regular,Consolas,Menlo,monospace;color:var(--silver);text-shadow:0 0 10px rgba(220,220,235,.3);white-space:nowrap;font-size:.85rem}
+.cat li .d{color:var(--grey2);word-break:break-word}
+.cat li .d::before{content:"{ ";color:var(--grey2)}
+.cat li .d::after{content:" }";color:var(--grey2)}
+.cat li .d:empty{display:none}
+
+/* ---- TODO ---- */
+.todo-card{border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));max-width:760px}
+.todo-row{display:flex;gap:14px;align-items:center;padding:13px 0;border-bottom:1px dashed var(--line);color:var(--grey);font-size:.94rem}
+.todo-row:last-child{border-bottom:none}
+.chk{width:19px;height:19px;border-radius:6px;border:1.5px solid rgba(255,255,255,.28);flex-shrink:0;box-shadow:inset 0 0 8px rgba(255,255,255,.05)}
+.todo-row.muted{color:var(--grey2);letter-spacing:.3em}
+
+/* ---- SCRIPT + COPY ---- */
+.codebox{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#09090c;max-width:860px}
+.codebar{display:flex;justify-content:space-between;align-items:center;padding:11px 18px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
+.fname{font-family:ui-monospace,Consolas,monospace;font-size:.78rem;color:var(--grey2);letter-spacing:.14em;text-transform:uppercase}
+.copy{cursor:pointer;border:none;border-radius:9px;padding:9px 22px;font-weight:700;font-size:.8rem;letter-spacing:.08em;color:#0a0a0c;background:linear-gradient(180deg,#fff,#cfcfda);box-shadow:0 0 16px rgba(230,230,245,.28);transition:.25s;font-family:inherit}
+.copy:hover{box-shadow:0 0 28px rgba(230,230,245,.5)}
+.codebox pre{margin:0;padding:24px;font-family:ui-monospace,Consolas,monospace;font-size:.85rem;line-height:1.75;color:#c9c9d4;overflow-x:auto}
+.cm{color:#66666f}.hd{color:#fff;font-weight:600}
+
+footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.foot p{color:var(--grey2);font-size:.84rem}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.on{opacity:1;transform:none}
+
+@media(max-width:860px){
+  .nav-links{position:fixed;top:72px;right:0;left:0;flex-direction:column;align-items:stretch;background:rgba(10,10,12,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:14px 24px 22px;gap:4px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:.3s}
+  .nav-links.open{transform:none;opacity:1;pointer-events:auto}
+  .nav-links a{padding:13px 14px;font-size:.95rem}
+  .burger{display:block}
+  section{padding:75px 0}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-fx"></div>
+<div id="cursorGlow"></div>
+
+<header id="topbar">
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="index.html">Z<span>ANITY</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="criminal-vs-swat.html" class="on">Criminal vs SWAT</a></li>
+        <li><a href="trench-war.html">Trench War</a></li>
+        <li><a href="audio-hub.html">Audio Hub</a></li>
+      </ul>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <span class="badge">Script • Roblox</span>
+  <h1>CRIMINAL VS SWAT</h1>
+  <p class="sub">The full package — <b>kill options</b>, <b>godmode</b>, modified gun, teleports and more.</p>
+  <div class="pill-row">
+    <span class="pill"><span class="dot"></span>version v1.0</span>
+    <span class="pill"><span class="dot"></span>working</span>
+    <span class="pill dim"><span class="dot"></span>v1.1 in progress</span>
+  </div>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="#script">Get the Script</a>
+    <a class="btn btn-ghost" href="#features">Features</a>
+  </div>
+
+  <!-- [RESIM] kendi görselin buraya gelecek (şimdilik SVG placeholder) -->
+  <div class="art">
+    <svg viewBox="0 0 800 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="800" height="300" fill="#0b0b0e"/>
+      <g stroke="rgba(255,255,255,.06)"><line x1="0" y1="75" x2="800" y2="75"/><line x1="0" y1="150" x2="800" y2="150"/><line x1="0" y1="225" x2="800" y2="225"/><line x1="200" y1="0" x2="200" y2="300"/><line x1="400" y1="0" x2="400" y2="300"/><line x1="600" y1="0" x2="600" y2="300"/></g>
+      <text x="120" y="165" font-family="ui-monospace,Consolas,monospace" font-size="30" fill="#9b9ba4" text-anchor="middle" letter-spacing="4">CRIMINAL</text>
+      <text x="680" y="165" font-family="ui-monospace,Consolas,monospace" font-size="30" fill="#9b9ba4" text-anchor="middle" letter-spacing="4">SWAT</text>
+      <circle cx="400" cy="150" r="80" fill="none" stroke="rgba(255,255,255,.18)"/>
+      <circle cx="400" cy="150" r="54" fill="none" stroke="rgba(255,255,255,.4)"/>
+      <text x="400" y="162" font-family="ui-monospace,Consolas,monospace" font-size="34" font-weight="bold" fill="#fff" text-anchor="middle" letter-spacing="2">VS</text>
+      <g stroke="rgba(255,255,255,.5)" stroke-width="2"><line x1="400" y1="40" x2="400" y2="62"/><line x1="400" y1="238" x2="400" y2="260"/><line x1="290" y1="150" x2="312" y2="150"/><line x1="488" y1="150" x2="510" y2="150"/></g>
+    </svg>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">01 — Features</span>
+      <h2>What's inside</h2>
+      <p>Every command the script currently has. Click a category to open / close it.</p>
+    </div>
+
+    <div class="cats reveal">
+
+      <!-- ATTACK -->
+      <details class="cat" open>
+        <summary>
+          <span class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="1.5" fill="#d4d4dd" stroke="none"/></svg></span>
+          <h3>Attack</h3>
+          <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9b9ba4" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <ul>
+          <li><code>Kill</code><span class="d">kill target</span></li>
+          <li><code>Loopkill</code><span class="d">loopkill selected target</span></li>
+          <li><code>Damage</code><span class="d">damage selected target</span></li>
+          <li><code>GiveHit</code><span class="d">hit selected target — i dont know why i added it, ill probably remove it in the next update</span></li>
+          <li><code>Teamkill</code><span class="d">kill all your teammates</span></li>
+          <li><code>KillAura</code><span class="d">kills the player who enters the selected range</span></li>
+          <li><code>Clickkill</code><span class="d">kill clicked target</span></li>
+        </ul>
+      </details>
+
+      <!-- HEALTH -->
+      <details class="cat" open>
+        <summary>
+          <span class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
+          <h3>Health</h3>
+          <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9b9ba4" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <ul>
+          <li><code>Godmode</code><span class="d">make u unkillable</span></li>
+          <li><code>GiveHealth</code><span class="d">give health to the selected target</span></li>
+          <li><code>Health</code><span class="d">change selected target health</span></li>
+          <li><code>GodPlayer</code><span class="d">make unkillable your target</span></li>
+        </ul>
+      </details>
+
+      <!-- MODIFIED GUN -->
+      <details class="cat" open>
+        <summary>
+          <span class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          <h3>Modified Gun</h3>
+          <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9b9ba4" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <ul>
+          <li><code>WallBang</code><span class="d">shoot through walls</span></li>
+          <li><code>SilentAim</code><span class="d">it fires automatically without you having to aim</span></li>
+          <li><code>OneShot</code><span class="d">kills the player in a once shoot</span></li>
+          <li><code>GunDamage</code><span class="d">select your gun damage</span></li>
+          <li><code>FriendlyFire</code><span class="d">u can shoot your teammate rn</span></li>
+        </ul>
+      </details>
+
+      <!-- TELEPORT -->
+      <details class="cat" open>
+        <summary>
+          <span class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <h3>Teleport</h3>
+          <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9b9ba4" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <ul>
+          <li><code>CriminalVip</code><span class="d">enter criminal vip area</span></li>
+          <li><code>SwatVip</code><span class="d">enter swat vip area</span></li>
+          <li><code>CriminalBase</code><span class="d">enter criminal base</span></li>
+          <li><code>SwatBase</code><span class="d">enter swat base</span></li>
+          <li><code>Lobby</code><span class="d">enter lobby</span></li>
+        </ul>
+      </details>
+
+      <!-- OTHERS -->
+      <details class="cat" open>
+        <summary>
+          <span class="ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span>
+          <h3>Others</h3>
+          <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9b9ba4" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <ul>
+          <li><code>Swat</code><span class="d">switch your team to swat</span></li>
+          <li><code>Criminal</code><span class="d">switch your team to criminal</span></li>
+          <li><code>Chams</code><span class="d">u can seeing peoples through a wall, so esp</span></li>
+          <li><code>Prefix</code><span class="d">change your command prefix</span></li>
+          <li><code>Fly</code><span class="d"></span></li>
+          <li><code>Speed</code><span class="d"></span></li>
+          <li><code>Noclip</code><span class="d"></span></li>
+          <li><code>Infjump</code><span class="d"></span></li>
+          <li><code>SpinBot</code><span class="d"></span></li>
+          <li><code>AntiAfk</code><span class="d"></span></li>
+          <li><code>Rejoin</code><span class="d"></span></li>
+          <li><code>Cmds</code><span class="d">open commands menu</span></li>
+        </ul>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= TODO ================= -->
+<section id="todo">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">02 — To-Do</span>
+      <h2>TODO List</h2>
+      <p>What's next for this script.</p>
+    </div>
+    <div class="todo-card reveal">
+      <div class="todo-row"><span class="chk"></span>v1.2 (most likely the final update) — choose what to do</div>
+      <div class="todo-row"><span class="chk"></span>start working on v1.1 of the script</div>
+      <div class="todo-row muted"><span class="chk"></span>···</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SCRIPT ================= -->
+<section id="script">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">03 — Script</span>
+      <h2>Get the Script</h2>
+      <p>Copy the script below, paste it into your executor and run it.</p>
+    </div>
+    <div class="codebox reveal">
+      <div class="codebar">
+        <span class="fname">script.lua</span>
+        <button class="copy" id="copyBtn" onclick="copyScript(this)">Copy</button>
+      </div>
+      <!-- [SCRIPT] asıl scripti buraya yapıştıracağız — bu <pre> içeriğini değiştir -->
+      <pre id="scriptText"><span class="cm">--[[
+    ZANITY  •  CRIMINAL VS SWAT
+    version : v1.0
+    status  : working
+]]</span>
+
+<span class="cm">-- the script will be dropped here</span>
+<span class="cm">-- (send it to me and i'll paste it in)</span></pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <p>© <span id="year"></span> Zanity. All rights reserved.</p>
+    <p>use it, don't abuse it 🤙</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+const topbar = document.getElementById('topbar');
+addEventListener('scroll', () => topbar.classList.toggle('scrolled', scrollY > 30), {passive:true});
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+const glow = document.getElementById('cursorGlow');
+addEventListener('pointermove', e => { glow.style.opacity = 1; glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
+const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('on'); io.unobserve(en.target); } }), {threshold:.18});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+function copyScript(btn){
+  const txt = document.getElementById('scriptText').innerText;
+  const done = () => { const o = btn.textContent; btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = o, 1600); };
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch(e) { btn.textContent = 'Ctrl+C'; }
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(done).catch(fallback);
+  } else fallback();
+}
+</script>
+</body>
+</html>
