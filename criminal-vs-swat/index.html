@@ -56,6 +56,7 @@ nav{display:flex;align-items:center;justify-content:space-between;height:72px}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 34px rgba(230,230,245,.55)}
 .btn-ghost{color:var(--silver);border:1px solid var(--line);background:rgba(255,255,255,.03)}
 .btn-ghost:hover{border-color:rgba(255,255,255,.35);color:#fff;text-shadow:0 0 12px rgba(255,255,255,.5)}
+button.btn{cursor:pointer;border:none;font-family:inherit}
 
 /* [RESIM] görsel yerine şimdilik SVG — kendi görselin için: bu <div class="art">...</div> içini
    <img src="cvs-banner.png" alt="Criminal vs SWAT" style="width:100%;display:block"> ile değiştir */
@@ -212,8 +213,8 @@ footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
     <span class="pill dim"><span class="dot"></span>v1.1 waiting..</span>
   </div>
   <div class="cta-row">
-    <a class="btn btn-primary" href="#script">Get the Script</a>
-    <a class="btn btn-ghost" href="#features">Features</a>
+    <button class="btn btn-primary" onclick="goTo('script')">Get the Script</button>
+    <button class="btn btn-ghost" onclick="goTo('features')">Features</button>
   </div>
 
   <!-- [RESIM] criminal vs swat görseli -->
@@ -416,6 +417,9 @@ function downloadScript(){
   setTimeout(() => URL.revokeObjectURL(a.href), 3000);
 }
 
+// ---- SALT KAYDIRMA (URL'a # eklemesin) ----
+function goTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+
 // ---- TEMA (default: dark) ----
 const themeBtn = document.getElementById('themeBtn');
 function setTheme(light){
@@ -426,5 +430,5 @@ function setTheme(light){
 themeBtn.addEventListener('click', () => setTheme(!document.body.classList.contains('light')));
 try{ if(localStorage.getItem('zanity-theme') === 'light') setTheme(true); }catch(e){}
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a30461a4be6b68b5',t:'MTc4NzU5NTczNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
