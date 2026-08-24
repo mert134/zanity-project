@@ -17,6 +17,7 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.6;overflow-x:hidden}
 ::selection{background:rgba(255,255,255,.85);color:#0a0a0c}
+body.light ::selection{background:#1a1a20;color:#f4f4f7}
 
 .bg-fx{position:fixed;inset:0;z-index:-2;pointer-events:none}
 .bg-fx::before{content:"";position:absolute;top:-260px;left:50%;transform:translateX(-50%);width:900px;height:520px;border-radius:50%;background:radial-gradient(closest-side,rgba(190,190,215,.14),transparent 70%)}
@@ -186,9 +187,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="home">
-  <span class="badge">Script Hub</span>
   <h1>ZANITY</h1>
-  <p class="sub">just a random guy making <b>scripts</b> for the games he loves —<br>whenever the mood strikes.</p>
   <div class="cta-row">
     <a class="btn btn-primary" href="#scripts">Browse Scripts</a>
     <a class="btn btn-ghost" href="#faq">FAQ</a>
@@ -246,8 +245,8 @@ footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
     <div class="faqs reveal">
 
       <details class="faq">
-        <summary>trollokoyu neden zanity diye değiştirdiniz? <span class="plus"></span></summary>
-        <div class="ans">çünkü daha şık ve daha iyi duruyor 👍</div>
+        <summary>why did you change trollokoy to zanity? <span class="plus"></span></summary>
+        <div class="ans">because it looks sleeker and better 👍</div>
       </details>
 
       <details class="faq">
@@ -317,5 +316,5 @@ function setTheme(light){
 themeBtn.addEventListener('click', () => setTheme(!document.body.classList.contains('light')));
 try{ if(localStorage.getItem('zanity-theme') === 'light') setTheme(true); }catch(e){}
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a303fd4cbe81d620',t:'MTc4NzU5MTYyNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3041b131e94720d',t:'MTc4NzU5Mjg0NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
