@@ -1,28 +1,570 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Official Zanity Scripts</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #f8fafc; text-align: center; padding: 50px 20px; margin: 0; }
-        h1 { color: #38bdf8; font-size: 2.5rem; margin-bottom: 10px; }
-        p { color: #94a3b8; font-size: 1.1rem; }
-        .card { background-color: #1e293b; border-radius: 12px; padding: 25px; margin: 20px auto; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: left; }
-        .card h3 { color: #f43f5e; margin-top: 0; }
-        code { background-color: #020617; color: #22c55e; padding: 10px; display: block; border-radius: 6px; font-family: monospace; overflow-x: auto; font-size: 0.9rem; }
-        .btn { background-color: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 15px; font-weight: bold; }
-        .btn:hover { background-color: #0369a1; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZANITY — Portfolyo</title>
+<meta name="description" content="Zanity — yaratıcı dijital çözümler ve projeler.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='72' font-size='70' text-anchor='middle' fill='%23c9c9d4' font-family='Arial' font-weight='bold'%3EZ%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   ZANITY — Siyah & Gri, Parlayan Profesyonel Tema
+   İçerikleri değiştirmek için HTML içindeki
+   [DEĞİŞTİR] etiketli yerleri arayabilirsin.
+   ============================================================ */
+:root{
+  --bg:#08080a;
+  --bg2:#0e0e11;
+  --panel:#121216;
+  --line:rgba(255,255,255,.08);
+  --txt:#ececee;
+  --grey:#9b9ba4;
+  --grey2:#6f6f78;
+  --silver:#d4d4dd;
+  --glow:0 0 18px rgba(220,220,235,.35), 0 0 60px rgba(180,180,200,.18);
+  --radius:16px;
+  --max:1120px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+::selection{background:rgba(255,255,255,.85);color:#0a0a0c}
+
+/* ---- arka plan efektleri ---- */
+.bg-fx{position:fixed;inset:0;z-index:-2;pointer-events:none}
+.bg-fx::before{ /* üst ışıma */
+  content:"";position:absolute;top:-260px;left:50%;transform:translateX(-50%);
+  width:900px;height:520px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(190,190,215,.14),transparent 70%);
+}
+.bg-fx::after{ /* ince ızgara */
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 40%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 40%,transparent 100%);
+}
+#cursorGlow{ /* fareyi takip eden ışık */
+  position:fixed;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(200,200,225,.07),transparent 70%);
+  transform:translate(-50%,-50%);z-index:-1;pointer-events:none;
+  transition:opacity .4s;opacity:0;
+}
+
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+/* ---- üst menü ---- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  transition:background .3s,border-color .3s,backdrop-filter .3s;
+  border-bottom:1px solid transparent;
+}
+header.scrolled{background:rgba(8,8,10,.75);backdrop-filter:blur(14px);border-color:var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{
+  font-weight:800;font-size:1.3rem;letter-spacing:.28em;text-decoration:none;
+  color:var(--silver);
+  text-shadow:0 0 14px rgba(220,220,235,.45);
+}
+.logo span{color:#fff}
+.nav-links{display:flex;gap:8px;list-style:none;align-items:center}
+.nav-links a{
+  color:var(--grey);text-decoration:none;font-size:.86rem;letter-spacing:.06em;
+  padding:8px 14px;border-radius:10px;transition:.25s;
+}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.06);text-shadow:0 0 12px rgba(255,255,255,.5)}
+.burger{display:none;background:none;border:1px solid var(--line);color:var(--silver);
+  font-size:1.2rem;border-radius:10px;width:42px;height:42px;cursor:pointer}
+
+/* ---- hero ---- */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 24px 80px;position:relative}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--line);border-radius:999px;
+  padding:7px 16px;font-size:.78rem;letter-spacing:.22em;color:var(--grey);
+  background:rgba(255,255,255,.03);text-transform:uppercase;
+}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff,0 0 22px rgba(255,255,255,.6);animation:blink 2.2s infinite}
+@keyframes blink{50%{opacity:.35}}
+.hero h1{
+  margin:34px 0 10px;
+  font-size:clamp(3.4rem,11vw,7.5rem);
+  font-weight:900;letter-spacing:.22em;
+  color:#f4f4f7;
+  text-shadow:
+    0 0 12px rgba(255,255,255,.55),
+    0 0 42px rgba(200,200,225,.35),
+    0 0 110px rgba(170,170,200,.25);
+  animation:breathe 4.5s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%,100%{text-shadow:0 0 12px rgba(255,255,255,.55),0 0 42px rgba(200,200,225,.30),0 0 100px rgba(170,170,200,.20)}
+  50%{text-shadow:0 0 16px rgba(255,255,255,.75),0 0 60px rgba(200,200,225,.50),0 0 140px rgba(170,170,200,.35)}
+}
+.hero .sub{
+  font-size:clamp(1rem,2.4vw,1.25rem);color:var(--grey);max-width:560px;
+}
+.hero .sub b{color:var(--silver);font-weight:600}
+.cta-row{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;justify-content:center}
+.btn{
+  text-decoration:none;font-size:.9rem;letter-spacing:.05em;
+  padding:13px 30px;border-radius:12px;transition:.3s;font-weight:600;
+}
+.btn-primary{
+  color:#0a0a0c;background:linear-gradient(180deg,#ffffff,#cfcfda);
+  box-shadow:0 0 22px rgba(230,230,245,.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 34px rgba(230,230,245,.55)}
+.btn-ghost{color:var(--silver);border:1px solid var(--line);background:rgba(255,255,255,.03)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.35);color:#fff;text-shadow:0 0 12px rgba(255,255,255,.5)}
+.stats{display:flex;gap:0;margin-top:64px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.02);overflow:hidden}
+.stat{padding:20px 34px;text-align:center}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat .num{font-size:1.6rem;font-weight:800;color:#fff;text-shadow:0 0 16px rgba(255,255,255,.4)}
+.stat .lbl{font-size:.74rem;letter-spacing:.16em;color:var(--grey2);text-transform:uppercase}
+
+/* ---- bölümler ---- */
+section{padding:110px 0}
+.sec-head{margin-bottom:54px}
+.sec-head .kicker{
+  font-size:.76rem;letter-spacing:.3em;color:var(--grey2);text-transform:uppercase;display:block;margin-bottom:10px;
+}
+.sec-head h2{
+  font-size:clamp(1.8rem,4.5vw,2.6rem);font-weight:800;letter-spacing:.04em;color:#f0f0f4;
+  text-shadow:0 0 24px rgba(220,220,240,.25);
+}
+.sec-head p{color:var(--grey);max-width:600px;margin-top:12px}
+
+/* hakkımda */
+.about-grid{display:grid;grid-template-columns:300px 1fr;gap:56px;align-items:center}
+.avatar-card{
+  position:relative;border-radius:var(--radius);padding:1px;
+  background:linear-gradient(160deg,rgba(255,255,255,.35),rgba(255,255,255,.04) 40%,rgba(255,255,255,.18));
+}
+.avatar-inner{
+  border-radius:15px;background:var(--panel);padding:34px;text-align:center;position:relative;overflow:hidden;
+}
+.avatar-inner::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,rgba(220,220,245,.12),transparent 60%);
+}
+.avatar-svg{width:130px;height:130px;margin:6px auto 18px;display:block;filter:drop-shadow(0 0 18px rgba(220,220,240,.35))}
+.avatar-name{font-weight:700;font-size:1.1rem;color:#fff}
+.avatar-role{font-size:.8rem;letter-spacing:.18em;color:var(--grey2);text-transform:uppercase;margin-top:4px}
+.about-txt p{color:var(--grey);margin-bottom:16px;font-size:1.02rem}
+.about-txt .hl{color:var(--silver);font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.tag{
+  border:1px solid var(--line);border-radius:999px;padding:7px 16px;font-size:.8rem;color:var(--grey);
+  background:rgba(255,255,255,.03);transition:.25s;letter-spacing:.04em;
+}
+.tag:hover{color:#fff;border-color:rgba(255,255,255,.3);box-shadow:0 0 16px rgba(220,220,240,.18)}
+
+/* yetenekler */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.skill{
+  border:1px solid var(--line);border-radius:var(--radius);padding:26px;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
+  transition:.3s;position:relative;overflow:hidden;
+}
+.skill:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.22);box-shadow:0 14px 40px rgba(0,0,0,.5),0 0 24px rgba(200,200,225,.08)}
+.skill .ic{
+  width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.06);border:1px solid var(--line);margin-bottom:16px;
+  box-shadow:inset 0 0 14px rgba(255,255,255,.06);
+}
+.skill h3{font-size:1.02rem;color:#fff;margin-bottom:8px;letter-spacing:.03em}
+.skill p{font-size:.88rem;color:var(--grey2)}
+.bar{height:4px;border-radius:99px;background:rgba(255,255,255,.08);margin-top:18px;overflow:hidden}
+.bar i{
+  display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#8a8a98,#ffffff);
+  box-shadow:0 0 12px rgba(255,255,255,.5);
+  transition:width 1.4s cubic-bezier(.2,.7,.2,1);
+}
+
+/* projeler */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.proj{
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  background:var(--panel);transition:.3s;display:flex;flex-direction:column;text-decoration:none;
+}
+.proj:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.25);box-shadow:0 18px 50px rgba(0,0,0,.55),0 0 30px rgba(200,200,225,.1)}
+.proj .cover{aspect-ratio:16/9;display:block;position:relative}
+.proj .cover::after{
+  content:"→";position:absolute;right:16px;bottom:12px;color:#fff;font-size:1.1rem;
+  opacity:0;transform:translateX(-6px);transition:.3s;text-shadow:0 0 10px #fff;
+}
+.proj:hover .cover::after{opacity:1;transform:none}
+.proj .body{padding:22px;flex:1;display:flex;flex-direction:column}
+.proj h3{color:#fff;font-size:1.05rem;letter-spacing:.03em;margin-bottom:8px}
+.proj p{color:var(--grey2);font-size:.88rem;flex:1}
+.proj .meta{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.proj .meta span{
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);
+  border:1px solid var(--line);border-radius:99px;padding:4px 11px;background:rgba(255,255,255,.03);
+}
+
+/* iletişim */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.contact-info .row{display:flex;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.contact-info .row:first-child{padding-top:0}
+.c-ic{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);
+}
+.c-lbl{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey2)}
+.c-val{color:var(--silver);font-size:.98rem;text-decoration:none}
+a.c-val:hover{color:#fff;text-shadow:0 0 12px rgba(255,255,255,.55)}
+.form{border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01))}
+.form h3{color:#fff;margin-bottom:4px;letter-spacing:.03em}
+.form .note{font-size:.82rem;color:var(--grey2);margin-bottom:22px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey2);margin-bottom:8px}
+.field input,.field textarea{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);
+  border-radius:10px;padding:12px 14px;color:var(--txt);font-family:inherit;font-size:.92rem;outline:none;transition:.25s;
+}
+.field input:focus,.field textarea:focus{border-color:rgba(255,255,255,.4);box-shadow:0 0 0 3px rgba(255,255,255,.08),0 0 18px rgba(220,220,240,.15)}
+.field textarea{resize:vertical;min-height:110px}
+.submit{
+  width:100%;cursor:pointer;border:none;border-radius:10px;padding:13px;
+  font-weight:700;font-size:.92rem;letter-spacing:.05em;color:#0a0a0c;
+  background:linear-gradient(180deg,#ffffff,#cfcfda);
+  box-shadow:0 0 20px rgba(230,230,245,.3);transition:.3s;font-family:inherit;
+}
+.submit:hover{box-shadow:0 0 34px rgba(230,230,245,.5)}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.foot p{color:var(--grey2);font-size:.84rem}
+.foot .socials{display:flex;gap:10px}
+.foot .socials a{
+  width:38px;height:38px;border-radius:10px;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;transition:.25s;
+}
+.foot .socials a:hover{border-color:rgba(255,255,255,.35);box-shadow:0 0 16px rgba(220,220,240,.2);transform:translateY(-2px)}
+
+/* reveal animasyonu */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.on{opacity:1;transform:none}
+
+/* mobil */
+@media(max-width:860px){
+  .nav-links{
+    position:fixed;top:72px;right:0;left:0;flex-direction:column;align-items:stretch;
+    background:rgba(10,10,12,.97);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--line);padding:14px 24px 22px;gap:4px;
+    transform:translateY(-8px);opacity:0;pointer-events:none;transition:.3s;
+  }
+  .nav-links.open{transform:none;opacity:1;pointer-events:auto}
+  .nav-links a{padding:13px 14px;font-size:.98rem}
+  .burger{display:block}
+  .about-grid{grid-template-columns:1fr}
+  .avatar-card{max-width:320px;margin:0 auto}
+  .contact-grid{grid-template-columns:1fr}
+  .stats{flex-direction:column}
+  .stat+.stat{border-left:none;border-top:1px solid var(--line)}
+  section{padding:80px 0}
+}
+</style>
 </head>
 <body>
 
-    <h1>Official Zanity</h1>
-    <p>deneme123 alo</p>
+<div class="bg-fx"></div>
+<div id="cursorGlow"></div>
 
-    <div class="card">
-        <h3>Test site</h3>
+<!-- ================= ÜST MENÜ ================= -->
+<header id="topbar">
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#home">Z<span>ANITY</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Ana Sayfa</a></li>
+        <li><a href="#hakkimda">Hakkımda</a></li>
+        <li><a href="#yetenekler">Yetenekler</a></li>
+        <li><a href="#projeler">Projeler</a></li>
+        <li><a href="#iletisim">İletişim</a></li>
+      </ul>
+      <button class="burger" id="burger" aria-label="Menü">☰</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+  <span class="badge">Portfolyo</span>
+  <h1>ZANITY</h1>
+  <!-- [DEĞİŞTİR] Altındaki tanıtım cümlesi -->
+  <p class="sub">Fikirleri <b>işe dönüştüren</b> yaratıcı dijital çözümler.<br>Modern tasarım, temiz kod, etkileyici sonuçlar.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="#projeler">Projeleri Gör</a>
+    <a class="btn btn-ghost" href="#iletisim">İletişime Geç</a>
+  </div>
+  <!-- [DEĞİŞTİR] Kendi rakamların -->
+  <div class="stats">
+    <div class="stat"><div class="num">5+</div><div class="lbl">Yıl Deneyim</div></div>
+    <div class="stat"><div class="num">40+</div><div class="lbl">Tamamlanan Proje</div></div>
+    <div class="stat"><div class="num">30+</div><div class="lbl">Mutlu Müşteri</div></div>
+  </div>
+</section>
+
+<!-- ================= HAKKIMDA ================= -->
+<section id="hakkimda">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">01 — Hakkımda</span>
+      <h2>Kısaca Ben</h2>
     </div>
+    <div class="about-grid">
+      <div class="avatar-card reveal">
+        <div class="avatar-inner">
+          <svg class="avatar-svg" viewBox="0 0 120 120" fill="none">
+            <circle cx="60" cy="60" r="58" stroke="rgba(255,255,255,.15)"/>
+            <circle cx="60" cy="46" r="20" stroke="#d4d4dd" stroke-width="2.5"/>
+            <path d="M22 106 C22 82 40 72 60 72 C80 72 98 82 98 106" stroke="#d4d4dd" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="46" r="20" fill="rgba(255,255,255,.05)"/>
+            <path d="M22 106 C22 82 40 72 60 72 C80 72 98 82 98 106" fill="rgba(255,255,255,.05)"/>
+          </svg>
+          <!-- [DEĞİŞTİR] İsim ve unvan -->
+          <div class="avatar-name">Ad Soyad</div>
+          <div class="avatar-role">Kurucu — Zanity</div>
+        </div>
+      </div>
+      <div class="about-txt reveal">
+        <!-- [DEĞİŞTİR] Kendi metnin -->
+        <p>Merhaba! Ben <span class="hl">Ad Soyad</span>. <span class="hl">Zanity</span> çatısı altında, markaların dijital dünyada parlamasına yardımcı oluyorum.</p>
+        <p>Yazılım geliştirme ve tasarımdan oluşan disiplinler arası yaklaşımımla; web siteleri, otomasyonlar ve dijital ürünler tasarlayıp hayata geçiriyorum.</p>
+        <p>Her projede aynı ilkeye sadık kalıyorum: <span class="hl">sade, hızlı ve kalıcı</span> işler üretmek.</p>
+        <!-- [DEĞİŞTİR] İlgi alanları / araçlar -->
+        <div class="tags">
+          <span class="tag">Web Geliştirme</span>
+          <span class="tag">UI / UX</span>
+          <span class="tag">Markalaşma</span>
+          <span class="tag">Otomasyon</span>
+          <span class="tag">Dijital Pazarlama</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ================= YETENEKLER ================= -->
+<section id="yetenekler">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">02 — Yetenekler</span>
+      <h2>Ne Yapıyorum?</h2>
+      <p>Sonuca giden yolda kullandığım başlıca yetenek ve hizmet alanları.</p>
+    </div>
+    <div class="skills-grid">
+      <!-- [DEĞİŞTİR] Yetenek kartları — bar yüzdesini data-bar ile ayarla -->
+      <div class="skill reveal">
+        <div class="ic">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>Web Geliştirme</h3>
+        <p>Hızlı, responsive ve modern web siteleri; ön yüzden arka uca uçtan uca geliştirme.</p>
+        <div class="bar"><i data-bar="95%"></i></div>
+      </div>
+      <div class="skill reveal">
+        <div class="ic">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3>UI / UX Tasarım</h3>
+        <p>Kullanıcı odaklı arayüzler; estetik ve kullanılabilirliği aynı anda hedefleyen tasarımlar.</p>
+        <div class="bar"><i data-bar="90%"></i></div>
+      </div>
+      <div class="skill reveal">
+        <div class="ic">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3>Dijital Strateji</h3>
+        <p>Marka konumlandırması, içerik planı ve büyüme odaklı dijital stratejiler.</p>
+        <div class="bar"><i data-bar="85%"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJELER ================= -->
+<section id="projeler">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">03 — Projeler</span>
+      <h2>Seçili İşler</h2>
+      <p>Şimdiye kadar hayata geçirdiğim projelerden bazıları. Yenileri yolda.</p>
+    </div>
+    <div class="proj-grid">
+      <!-- [DEĞİŞTİR] Proje kartları — href kısmına proje linkini koy -->
+      <a class="proj reveal" href="#">
+        <svg class="cover" viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="225" fill="#101014"/>
+          <circle cx="200" cy="112" r="70" fill="none" stroke="rgba(255,255,255,.2)"/>
+          <circle cx="200" cy="112" r="46" fill="none" stroke="rgba(255,255,255,.35)"/>
+          <circle cx="200" cy="112" r="10" fill="#fff" opacity=".9"/>
+          <rect width="400" height="225" fill="url(#g1)"/>
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0a0c" stop-opacity="0"/><stop offset="1" stop-color="#0a0a0c" stop-opacity=".85"/></linearGradient></defs>
+        </svg>
+        <div class="body">
+          <h3>Proje Adı 1</h3>
+          <p>Kısa proje açıklaması buraya gelecek. Hangi problemi çözdüğünü ve sonucunu kısaca anlat.</p>
+          <div class="meta"><span>Web</span><span>Tasarım</span></div>
+        </div>
+      </a>
+      <a class="proj reveal" href="#">
+        <svg class="cover" viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="225" fill="#101014"/>
+          <path d="M60 170 L140 90 L210 150 L280 70 L340 120" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="280" cy="70" r="6" fill="#fff"/>
+          <rect width="400" height="225" fill="url(#g2)"/>
+          <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0a0c" stop-opacity="0"/><stop offset="1" stop-color="#0a0a0c" stop-opacity=".85"/></linearGradient></defs>
+        </svg>
+        <div class="body">
+          <h3>Proje Adı 2</h3>
+          <p>Kısa proje açıklaması buraya gelecek. Hangi problemi çözdüğünü ve sonucunu kısaca anlat.</p>
+          <div class="meta"><span>Otomasyon</span><span>Veri</span></div>
+        </div>
+      </a>
+      <a class="proj reveal" href="#">
+        <svg class="cover" viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="225" fill="#101014"/>
+          <rect x="110" y="60" width="180" height="105" rx="12" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2.5"/>
+          <rect x="110" y="60" width="180" height="105" rx="12" fill="rgba(255,255,255,.04)"/>
+          <circle cx="200" cy="112" r="22" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2.5"/>
+          <rect width="400" height="225" fill="url(#g3)"/>
+          <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0a0c" stop-opacity="0"/><stop offset="1" stop-color="#0a0a0c" stop-opacity=".85"/></linearGradient></defs>
+        </svg>
+        <div class="body">
+          <h3>Proje Adı 3</h3>
+          <p>Kısa proje açıklaması buraya gelecek. Hangi problemi çözdüğünü ve sonucunu kısaca anlat.</p>
+          <div class="meta"><span>E-Ticaret</span><span>Marka</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= İLETİŞİM ================= -->
+<section id="iletisim">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">04 — İletişim</span>
+      <h2>Birlikte Çalışalım</h2>
+      <p>Projen mi var? Fikrin mi var? Yaz, en kısa sürede dönüş yapalım.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <!-- [DEĞİŞTİR] İletişim bilgileri -->
+        <div class="row">
+          <div class="c-ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div><div class="c-lbl">E-posta</div><a class="c-val" href="mailto:info@zanity.com">info@zanity.com</a></div>
+        </div>
+        <div class="row">
+          <div class="c-ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div><div class="c-lbl">Konum</div><span class="c-val">Kırıkkale, Türkiye</span></div>
+        </div>
+        <div class="row">
+          <div class="c-ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div><div class="c-lbl">Çalışma Saatleri</div><span class="c-val">Hafta içi 09.00 — 18.00</span></div>
+        </div>
+      </div>
+      <form class="form reveal" id="contactForm">
+        <h3>Mesaj Gönder</h3>
+        <p class="note">Form henüz önizleme amaçlıdır; mesajlar şimdilik e-posta programını açar.</p>
+        <div class="field"><label for="fName">İsim</label><input id="fName" type="text" placeholder="Adın" required></div>
+        <div class="field"><label for="fMail">E-posta</label><input id="fMail" type="email" placeholder="ornek@mail.com" required></div>
+        <div class="field"><label for="fMsg">Mesajın</label><textarea id="fMsg" placeholder="Projeni anlat..." required></textarea></div>
+        <button class="submit" type="submit">Gönder</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap foot">
+    <p>© <span id="year"></span> Zanity. Tüm hakları saklıdır.</p>
+    <div class="socials">
+      <!-- [DEĞİŞTİR] Sosyal medya linkleri -->
+      <a href="#" aria-label="Instagram" title="Instagram">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#d4d4dd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#d4d4dd" stroke="none"/></svg>
+      </a>
+      <a href="#" aria-label="X / Twitter" title="X / Twitter">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#d4d4dd"><path d="M18.9 1.2h3.7l-8.1 9.3L24 23.1h-7.5l-5.9-7.7-6.7 7.7H.2l8.7-9.9L0 1.2h7.7l5.3 7 6-7zm-1.3 19.7h2.1L6.6 3.3H4.4l13.2 17.6z"/></svg>
+      </a>
+      <a href="#" aria-label="GitHub" title="GitHub">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="#d4d4dd"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.9 18.3 5.2 18.3 5.2c.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3z"/></svg>
+      </a>
+      <a href="#" aria-label="LinkedIn" title="LinkedIn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#d4d4dd"><path d="M20.4 20.5h-3.6v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.2V9h3.4v1.6c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.4 2.4 4.4 5.5v6.3zM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM7.1 20.5H3.5V9h3.6v11.5z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// yıl
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// üst menü kaydırma efekti
+const topbar = document.getElementById('topbar');
+addEventListener('scroll', () => {
+  topbar.classList.toggle('scrolled', scrollY > 30);
+}, {passive:true});
+
+// mobil menü
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+// fare ışıması
+const glow = document.getElementById('cursorGlow');
+addEventListener('pointermove', e => {
+  glow.style.opacity = 1;
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+
+// görünür olunca göster + bar doldur
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      en.target.classList.add('on');
+      en.target.querySelectorAll('.bar i').forEach(b => b.style.width = b.dataset.bar);
+      io.unobserve(en.target);
+    }
+  });
+}, {threshold:.18});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// form (önizleme: mailto açar)
+document.getElementById('contactForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const n = document.getElementById('fName').value;
+  const m = document.getElementById('fMail').value;
+  const t = document.getElementById('fMsg').value;
+  location.href = 'mailto:info@zanity.com?subject='
+    + encodeURIComponent('Zanity iletişim — ' + n)
+    + '&body=' + encodeURIComponent(t + '\n\n' + n + ' (' + m + ')');
+});
+</script>
 </body>
 </html>
