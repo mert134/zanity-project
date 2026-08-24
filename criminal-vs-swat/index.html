@@ -106,6 +106,62 @@ details[open] summary{background:rgba(255,255,255,.04)}
 .codebox pre{margin:0;padding:24px;font-family:ui-monospace,Consolas,monospace;font-size:.85rem;line-height:1.75;color:#c9c9d4;overflow-x:auto}
 .cm{color:#66666f}.hd{color:#fff;font-weight:600}
 
+/* ---- TEMA BUTONU ---- */
+.nav-right{display:flex;gap:8px}
+.tbtn{display:block;background:none;border:1px solid var(--line);border-radius:10px;width:42px;height:42px;cursor:pointer;font-size:1.05rem;color:var(--silver);transition:.25s}
+.tbtn:hover{border-color:rgba(255,255,255,.35)}
+
+/* ---- DOWNLOAD ---- */
+.dl{background:rgba(255,255,255,.06);color:var(--silver);border:1px solid var(--line);box-shadow:none}
+.dl:hover{box-shadow:0 0 18px rgba(220,220,240,.25)}
+
+/* ---- LIGHT THEME (default: dark) ---- */
+body.light{--bg:#f5f5f8;--bg2:#ededf2;--panel:#ffffff;--line:rgba(10,10,30,.12);--txt:#1a1a20;--grey:#55555f;--grey2:#8b8b95;--silver:#34343e}
+body{transition:background-color .3s,color .3s}
+body.light .bg-fx::before{background:radial-gradient(closest-side,rgba(130,130,170,.14),transparent 70%)}
+body.light .bg-fx::after{background-image:linear-gradient(rgba(10,10,40,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(10,10,40,.05) 1px,transparent 1px)}
+body.light #cursorGlow{background:radial-gradient(closest-side,rgba(90,90,140,.06),transparent 70%)}
+body.light header.scrolled{background:rgba(247,247,250,.85);border-color:var(--line)}
+body.light .logo{color:#34343e;text-shadow:none}
+body.light .logo span{color:#000}
+body.light .nav-links a{color:#55555f}
+body.light .nav-links a:hover,body.light .nav-links a.on{color:#111;background:rgba(10,10,40,.06);text-shadow:none;box-shadow:inset 0 0 0 1px var(--line)}
+body.light .tbtn{color:#34343e}
+body.light .tbtn:hover{border-color:rgba(10,10,40,.35)}
+body.light .badge{color:#55555f;border-color:var(--line);background:rgba(10,10,40,.04)}
+body.light .badge::before{background:#222;box-shadow:0 0 8px rgba(0,0,0,.35)}
+body.light .hero h1{color:#16161c;text-shadow:0 0 24px rgba(130,130,180,.25)}
+body.light .hero .sub{color:#55555f}
+body.light .hero .sub b{color:#34343e}
+body.light .pill{color:#55555f;border-color:var(--line);background:rgba(10,10,40,.04)}
+body.light .pill .dot{background:#222;box-shadow:0 0 8px rgba(0,0,0,.3)}
+body.light .pill.dim .dot{background:#9a9aa4;box-shadow:none}
+body.light .btn-primary{color:#fff;background:linear-gradient(180deg,#34343e,#15151b);box-shadow:0 8px 22px rgba(25,25,50,.22)}
+body.light .btn-primary:hover{box-shadow:0 12px 30px rgba(25,25,50,.32)}
+body.light .btn-ghost{color:#34343e;border-color:var(--line);background:rgba(10,10,40,.04)}
+body.light .btn-ghost:hover{color:#000;text-shadow:none}
+body.light .sec-head h2{color:#16161c;text-shadow:none}
+body.light .sec-head p{color:#55555f}
+body.light details.cat{border-color:var(--line);background:linear-gradient(180deg,#ffffff,#fafafc)}
+body.light details.cat summary h3{color:#16161c;text-shadow:none}
+body.light .ci{background:rgba(10,10,40,.05);border-color:var(--line)}
+body.light .cat li code{color:#2d2d37;text-shadow:none}
+body.light .cat li .d{color:#8b8b95}
+body.light .cat ul{background:#fff;border-color:var(--line);box-shadow:0 26px 60px rgba(35,35,70,.2)}
+body.light .todo-card{border-color:var(--line);background:#fff}
+body.light .todo-row{color:#55555f}
+body.light .chk{border-color:rgba(10,10,40,.35)}
+body.light .codebox{background:#fff;border-color:var(--line)}
+body.light .codebar{background:rgba(10,10,40,.03)}
+body.light .fname{color:#8b8b95}
+body.light .codebox pre{color:#33333d}
+body.light .cm{color:#a0a0aa}
+body.light .copy{color:#fff;background:linear-gradient(180deg,#34343e,#15151b);box-shadow:0 6px 16px rgba(25,25,50,.2)}
+body.light .copy:hover{box-shadow:0 8px 22px rgba(25,25,50,.3)}
+body.light .dl{background:rgba(10,10,40,.05);color:#34343e}
+body.light footer{border-color:var(--line)}
+body.light .foot p{color:#8b8b95}
+
 footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
 .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .foot p{color:var(--grey2);font-size:.84rem}
@@ -137,7 +193,10 @@ footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
         <li><a href="/trench-war/">Trench War</a></li>
         <li><a href="/audio-hub/">Audio Hub</a></li>
       </ul>
-      <button class="burger" id="burger" aria-label="Menu">☰</button>
+      <div class="nav-right">
+        <button class="tbtn" id="themeBtn" aria-label="Theme">☀️</button>
+        <button class="burger" id="burger" aria-label="Menu">☰</button>
+      </div>
     </nav>
   </div>
 </header>
@@ -290,17 +349,18 @@ footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
     <div class="codebox reveal">
       <div class="codebar">
         <span class="fname">script.lua</span>
-        <button class="copy" id="copyBtn" onclick="copyScript(this)">Copy</button>
+        <span style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="copy dl" onclick="downloadScript()">Download</button>
+          <button class="copy" id="copyBtn" onclick="copyScript(this)">Copy</button>
+        </span>
       </div>
-      <!-- [SCRIPT] asıl scripti buraya yapıştıracağız — bu <pre> içeriğini değiştir -->
+      <!-- [SCRIPT] zanity loader -->
       <pre id="scriptText"><span class="cm">--[[
     ZANITY  •  CRIMINAL VS SWAT
     version : v1.0
-    status  : working
 ]]</span>
 
-<span class="cm">-- the script will be dropped here</span>
-<span class="cm">-- (send it to me and i'll paste it in)</span></pre>
+loadstring(game:HttpGet(<span class="hd">"https://illunox.qzz.io/api/scripts/46c8e5183e0a41f096a0fee0f222127f"</span>))()</pre>
     </div>
   </div>
 </section>
@@ -345,6 +405,27 @@ function copyScript(btn){
     navigator.clipboard.writeText(txt).then(done).catch(fallback);
   } else fallback();
 }
+
+function downloadScript(){
+  const txt = document.getElementById('scriptText').innerText;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([txt], {type:'text/plain'}));
+  a.download = 'zanity-criminal-vs-swat.lua';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+}
+
+// ---- TEMA (default: dark) ----
+const themeBtn = document.getElementById('themeBtn');
+function setTheme(light){
+  document.body.classList.toggle('light', light);
+  themeBtn.textContent = light ? '🌙' : '☀️';
+  try{ localStorage.setItem('zanity-theme', light ? 'light' : 'dark'); }catch(e){}
+}
+themeBtn.addEventListener('click', () => setTheme(!document.body.classList.contains('light')));
+try{ if(localStorage.getItem('zanity-theme') === 'light') setTheme(true); }catch(e){}
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3039d09cbbcc73b',t:'MTc4NzU4NzY4Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a303cc70be7fd607',t:'MTc4NzU4OTYyNA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
