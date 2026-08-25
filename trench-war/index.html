@@ -106,9 +106,14 @@ details[open] summary{background:rgba(255,255,255,.04)}
 
 /* ---- SCRIPT + COPY ---- */
 .codebox{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#09090c;max-width:860px}
-.codebar{display:flex;justify-content:space-between;align-items:center;padding:11px 18px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
-.fname{font-family:ui-monospace,Consolas,monospace;font-size:.78rem;color:var(--grey2);letter-spacing:.14em;text-transform:uppercase}
-.copy{cursor:pointer;border:none;border-radius:9px;padding:9px 22px;font-weight:700;font-size:.8rem;letter-spacing:.08em;color:#0a0a0c;background:linear-gradient(180deg,#fff,#cfcfda);box-shadow:0 0 16px rgba(230,230,245,.28);transition:.25s;font-family:inherit}
+.codebar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 12px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03);flex-wrap:wrap}
+.fname{font-family:ui-monospace,Consolas,monospace;font-size:.72rem;color:var(--grey2);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.copy{cursor:pointer;border:none;border-radius:9px;padding:8px 14px;font-weight:700;font-size:.74rem;letter-spacing:.05em;color:#0a0a0c;background:linear-gradient(180deg,#fff,#cfcfda);box-shadow:0 0 16px rgba(230,230,245,.28);transition:.25s;font-family:inherit;white-space:nowrap}
+@media(max-width:420px){
+  .codebar{padding:10px}
+  .codebar > span:last-child{width:100%}
+  .codebar > span:last-child .copy{flex:1}
+}
 .copy:hover{box-shadow:0 0 28px rgba(230,230,245,.5)}
 .codebox pre{margin:0;padding:24px;font-family:ui-monospace,Consolas,monospace;font-size:.85rem;line-height:1.75;color:#c9c9d4;overflow-x:auto}
 .cm{color:#66666f}.hd{color:#fff;font-weight:600}
@@ -429,5 +434,5 @@ function setTheme(light){
 themeBtn.addEventListener('click', () => setTheme(!document.body.classList.contains('light')));
 try{ if(localStorage.getItem('zanity-theme') === 'light') setTheme(true); }catch(e){}
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a30a5396e964f5a2',t:'MTc4NzY1ODA3NA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a30a7829cccbe331',t:'MTc4NzY1OTU3Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
