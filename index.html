@@ -54,6 +54,9 @@ nav{display:flex;align-items:center;justify-content:space-between;height:72px}
 .hero .sub{font-size:clamp(1rem,2.4vw,1.2rem);color:var(--grey);max-width:580px}
 .hero .sub b{color:var(--silver);font-weight:600}
 .cta-row{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;justify-content:center}
+.last-updated{display:flex;align-items:center;gap:9px;margin-top:26px;padding:8px 15px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.025);color:var(--grey2);font-size:.78rem;letter-spacing:.035em}
+.last-updated::before{content:"";width:6px;height:6px;flex-shrink:0;border-radius:50%;background:var(--silver);box-shadow:0 0 10px rgba(220,220,235,.45)}
+.last-updated time{color:var(--grey);font-weight:600}
 .btn{text-decoration:none;font-size:.9rem;letter-spacing:.05em;padding:13px 30px;border-radius:12px;transition:.3s;font-weight:600}
 .btn-primary{color:#0a0a0c;background:linear-gradient(180deg,#ffffff,#cfcfda);box-shadow:0 0 22px rgba(230,230,245,.35)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 34px rgba(230,230,245,.55)}
@@ -198,6 +201,7 @@ footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
     <button class="btn btn-primary" onclick="goTo('scripts')">Browse Scripts</button>
     <button class="btn btn-ghost" onclick="goTo('faq')">FAQ</button>
   </div>
+  <p class="last-updated" lang="tr">En son <time id="lastUpdated">08.25.2026</time> tarihinde çalışma yapıldı.</p>
 </section>
 
 <!-- ================= SCRIPTS ================= -->
@@ -300,6 +304,14 @@ footer{border-top:1px solid var(--line);padding:34px 0;margin-top:40px}
 </footer>
 
 <script>
+// ============================================================
+// SON ÇALIŞMA TARİHİ — Sadece aşağıdaki tarihi değiştirmen yeterli.
+// ============================================================
+const SITE_CONFIG = {
+  lastUpdated: '08.25.2026'
+};
+
+document.getElementById('lastUpdated').textContent = SITE_CONFIG.lastUpdated;
 document.getElementById('year').textContent = new Date().getFullYear();
 const topbar = document.getElementById('topbar');
 addEventListener('scroll', () => topbar.classList.toggle('scrolled', scrollY > 30), {passive:true});
